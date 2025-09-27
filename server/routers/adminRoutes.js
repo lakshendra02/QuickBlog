@@ -8,9 +8,10 @@ import {
   getDashboard,
 } from "../controllers/adminController.js";
 import auth from "../middleware/auth.js";
+import { loginRateLimit } from "../middleware/rateLimiter.js";
 const adminRouter = express.Router();
 
-adminRouter.post("/login", adminLogin);
+adminRouter.post("/login", loginRateLimit, adminLogin);
 adminRouter.get("/comments", auth, getAllComments);
 adminRouter.get("/blogs", auth, getAllBlogsAdmin);
 adminRouter.post("/delete-comment", auth, deleteCommentById);
