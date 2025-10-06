@@ -8,7 +8,9 @@ import blogRouter from "./routers/blogRoutes.js";
 const app = express();
 app.use(express.json());
 
-await connectDB();
+if (process.env.NODE_ENV !== "test") {
+  await connectDB();
+}
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -22,8 +24,11 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Do not start the HTTP server when running under tests
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 export default app;
